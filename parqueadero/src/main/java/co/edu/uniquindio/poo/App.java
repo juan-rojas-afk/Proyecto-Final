@@ -3,13 +3,17 @@ package co.edu.uniquindio.poo;
 import java.util.Map;
 import java.util.Scanner;
 
-//Clase principal para la aplicación
+/**
+ * Clase principal que contiene el método main para ejecutar la aplicación del parqueadero.
+ */
 public class App {
     private static final Scanner scanner = new Scanner(System.in);
     private static Parqueadero parqueadero;
 
-    /** Método inicial que inicia la aplicación
-     * 
+    /**
+     * Método principal que inicia la aplicación del parqueadero.
+     * @param args Argumentos de línea de comandos (no utilizados).
+     * @throws ParqueaderoException Si ocurre un error en la aplicación del parqueadero.
      */
     public static void main(String[] args) throws ParqueaderoException{
         System.out.println("Bienvenido al menú del parqueadero");
@@ -19,6 +23,7 @@ public class App {
         boolean salir = false;
         while (!salir) {
             System.out.println("\nSeleccione una opción");
+            // Mostrar las opciones del menú
             System.out.println("1. Configurar valores de tarifas");
             System.out.println("2. Configurar Tamaño del parqueadero");
             System.out.println("3. Estacionar vehículo");
@@ -29,12 +34,15 @@ public class App {
             System.out.println("8. Estado del Parqueadero ");
             System.out.println("9. Salir");
 
+            // Leer la opción seleccionada por el usuario
             int opcion = obtenerEnteroValido("Ingrese el número de opción: ", 1, 9);
 
 
             try {
+                // Realizar acciones según la opción seleccionada
                 switch (opcion) {
                     case 1:
+                    //Configuración de tarifas
                         System.out.println("Configuración de tarifas");
                         if (parqueadero == null) {
                             System.out.println("Primero configure el tamaño del parqueadero antes de establecer las tarifas.");
@@ -72,6 +80,7 @@ public class App {
                         break;
                     
                     case 2:
+                        // Configuración tamaño del parqueadero
                         System.out.println("Configuración del tamaño del parqueadero");
                         System.out.println("Ingrese el número de filas del parqueadero (entre 1 y 100). ");
                         int filas = obtenerEnteroValido("", 1, 100);
@@ -81,6 +90,7 @@ public class App {
                         break;
 
                     case 3:
+                        // Estacionar vehículo 
                         System.out.println ("Estacionar vehículo");
                         System.out.println("Ingrese la placa del vehiculo formato(ABC123): ");
                         String placa = scanner.nextLine();
@@ -125,6 +135,7 @@ public class App {
 
                         break;
                     case 4:
+                        // Desocupar Puesto 
                         System.out.println("Ingrese la fila del puesto a desocupar: ");
                         fila = scanner.nextInt();
                         System.out.println("Ingrese la columna del puesto a desocupar: ");
@@ -139,6 +150,7 @@ public class App {
                         break;
 
                     case 5:
+                        // Identificar propietario del vehículo
                         System.out.println("Ingrese la fila del puesto para identificar al propietario: ");
                         fila = scanner.nextInt();
                         System.out.println("Ingrese la columna del puesto para identificar al propietario:  ");
@@ -153,6 +165,7 @@ public class App {
                         break;
 
                     case 6: 
+                        // Generar reporte diario
                         Map<Integer, Double>  reporteDiario = parqueadero.generarReporteDiario();
                         System.out.println("Reporte diario: ");
                         for (Map.Entry<Integer, Double> entry : reporteDiario.entrySet()) {
@@ -163,6 +176,7 @@ public class App {
                         return;
 
                     case 7:
+                        // Generar reporte mensual
                         Map<Integer, Double> reporteMensual = parqueadero.generarReporteMensual();
                         System.out.println("Reporte mensual: ");
                         for (Map.Entry<Integer, Double> entry : reporteMensual.entrySet()) {
@@ -179,20 +193,22 @@ public class App {
                         break;
                     
                     case 8:
-                    System.out.println("Estado del parqueadero");
-                    for (int i = 0; i < parqueadero.getFilas(); i++) {
-                        for (int j = 0; j < parqueadero.getColumnas(); j++) {
-                            if (parqueadero.puestoDisponible(i, j)) {
-                                System.out.print("[0] ");
-                            } else {
-                                System.out.print("[X] ");
+                        // Estado del Parqueadero
+                        System.out.println("Estado del parqueadero");
+                        for (int i = 0; i < parqueadero.getFilas(); i++) {
+                            for (int j = 0; j < parqueadero.getColumnas(); j++) {
+                                if (parqueadero.puestoDisponible(i, j)) {
+                                    System.out.print("[0] ");
+                                } else {
+                                    System.out.print("[X] ");
+                                }
                             }
+                            System.out.println();
                         }
-                        System.out.println();
-                    }
-                    break;
+                        break;
 
                     case 9:
+                        // Salir del sistema del parqueadero 
                         salir = true;
                         System.out.println("Saliendo del Sistema del parqueadero. ¡Feliz día!");
                         break;
@@ -200,12 +216,14 @@ public class App {
                         System.out.println("Opción invalida. Por favor, seleccione una opción valida");
                     }
             } catch (Exception e) {
+                // Capturar y manejar cualquier excepción que ocurra durante la ejecución
                 System.out.println("Error: " + e.getMessage());
-                ErrorLogger.logError(e);
+                ErrorLogger.logError(e); // Registrar el error en el archivo de registro de errores 
             }     
         }
     }
 
+    // Métodos auxiliares para manejar las opciones del menú y las interraciones con el usario....
     public static int obtenerEnteroValido(String mensaje, int min, int max) {
         int valor;
         while (true) {
@@ -238,4 +256,3 @@ public class App {
         return valor;
     }
 }
-

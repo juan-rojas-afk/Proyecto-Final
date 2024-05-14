@@ -268,4 +268,9 @@ public class Parqueadero {
         System.out.println("no se pudo cargar los datos: " + e.getMessage());
     }
 }
+
+    public void setTarifas(Map<String, Double> tarifas2) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setTarifas'");
+    }
 }

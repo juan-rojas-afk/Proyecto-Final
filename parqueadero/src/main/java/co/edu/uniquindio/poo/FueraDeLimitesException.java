@@ -9,5 +9,4 @@ public class FueraDeLimitesException extends ParqueaderoException {
     public String obtenerTipo() {
         return "Error en los límies ingresados";
     }
-    
 }

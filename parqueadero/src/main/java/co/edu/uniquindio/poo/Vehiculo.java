@@ -26,4 +26,3 @@ public abstract class Vehiculo {
     protected abstract int getTipo();
 }
 
-

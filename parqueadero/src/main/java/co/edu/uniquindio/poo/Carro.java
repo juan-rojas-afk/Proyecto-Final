@@ -9,5 +9,4 @@ public class Carro extends Vehiculo{
     public int getTipo() {
         return Parqueadero.TIPO_CARRO;
     }
-    
 }
