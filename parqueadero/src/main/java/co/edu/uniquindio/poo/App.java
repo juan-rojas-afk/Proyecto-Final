@@ -25,8 +25,9 @@ public class App {
             System.out.println("4. Desocupar puesto");
             System.out.println("5. Identiifcar propietario del vehiculo");
             System.out.println("6. Generar reporte diario");
-            System.out.println("7. Estado del Parqeuadero ");
-            System.out.println("8. Salir");
+            System.out.println("7. Generar reporte mensual");
+            System.out.println("8. Estado del Parqueadero ");
+            System.out.println("9. Salir");
 
             int opcion = obtenerEnteroValido("Ingrese el número de opción: ", 1, 8);
 
@@ -34,20 +35,40 @@ public class App {
             try {
                 switch (opcion) {
                     case 1:
-                        System.out.println("Configuración de tarifas por hora");
+                        System.out.println("Configuración de tarifas");
                         if (parqueadero == null) {
                             System.out.println("Primero configure el tamaño del parqueadero antes de establecer las tarifas.");
                             break;
                         }
-                        System.out.println("Ingrese el precio por hora para carros: ");
-                        double precioCarros = scanner.nextDouble();
-                        parqueadero.setTarifas(Parqueadero.TIPO_CARRO, precioCarros);
-                        System.out.println("Ingrese el valor por hora para motos clásicas");
-                        double precioMotosClasicas = scanner.nextDouble();
-                        parqueadero.setTarifas(Parqueadero.TIPO_MOTO_CLASICA, precioMotosClasicas);
-                        System.out.println("Ingrese el valor por hora para motos híbridas");
-                        double precioMotosHibridas = scanner.nextDouble();
-                        parqueadero.setTarifas(Parqueadero.TIPO_MOTO_HIBRIDA, precioMotosHibridas);
+
+                        // Tarifas por Hora 
+                        System.out.println("Ingresenlas tarifas por hora para cada tipo de vehículo: ");
+                        double tarifaHoraCarro = obtenerDoubleValido("Tarifa por hora para carro: ");
+                        double tarifaHoraMotoClasica = obtenerDoubleValido("Tarifa por hora para moto clásica");
+                        double tarifaHoraMotoHibrida = obtenerDoubleValido("Tarifa por hora para moto clásica");
+                        parqueadero.setTarifaPorHora(Parqueadero.TIPO_CARRO, tarifaHoraCarro);
+                        parqueadero.setTarifaPorHora(Parqueadero.TIPO_MOTO_CLASICA,tarifaHoraMotoClasica);
+                        parqueadero.setTarifaPorHora(Parqueadero.TIPO_MOTO_HIBRIDA, tarifaHoraMotoHibrida);
+
+                        // Tarifas por día 
+                        System.out.println("Ingrese las tarifas diarias y mensuales para cada tipo de vehículo: ");
+                        System.out.println("1. Carro");
+                        double tarifaDiariaCarro = obtenerDoubleValido("Tarifa diaria para caroo: ");
+                        double tarifaMensualCarro = obtenerDoubleValido("Tarifa mensual para carro: ");
+                        parqueadero.setTarifaDiaria(Parqueadero.TIPO_CARRO, tarifaDiariaCarro);
+                        parqueadero.setTarifaMensual(Parqueadero.TIPO_CARRO, tarifaMensualCarro);
+
+                        System.out.println("2. Moto Clásica");
+                        double tarifaDiariaMotoClasica = obtenerDoubleValido("Tarifa diaria para moto clásica: ");
+                        double tariafaMensualMotoClasica = obtenerDoubleValido("Tarifa mensual para moto clásica: ");
+                        parqueadero.setTarifaDiaria(Parqueadero.TIPO_MOTO_CLASICA, tarifaDiariaMotoClasica);
+                        parqueadero.setTarifaMensual(Parqueadero.TIPO_MOTO_CLASICA, tariafaMensualMotoClasica);
+
+                        System.out.println("3. Moto Híbrida");
+                        double tarifaDiariaMotoHibrida = obtenerDoubleValido("Tarifa diaria para moto híbrida: ");
+                        double tarifaMensualMotoHibrida = obtenerDoubleValido("Tarifa menusla para moto híbrida: ");
+                        parqueadero.setTarifaDiaria(Parqueadero.TIPO_MOTO_HIBRIDA, tarifaDiariaMotoHibrida);
+                        parqueadero.setTarifaMensual(Parqueadero.TIPO_MOTO_HIBRIDA, tarifaMensualMotoHibrida);
                         break;
                     
                     case 2:
@@ -132,26 +153,32 @@ public class App {
                         break;
 
                     case 6: 
-                        Map<Integer, Double> reporteDiario = parqueadero.generarReporteDiario();
+                        Map<Integer, Double>  reporteDiario = parqueadero.generarReporteDiario();
                         System.out.println("Reporte diario: ");
                         for (Map.Entry<Integer, Double> entry : reporteDiario.entrySet()) {
-                            String tipoVehiculo = "";
-                            switch (entry.getKey()) {
-                                case 1:
-                                    tipoVehiculo = "Carro";
-                                    break;
-                                case 2:
-                                    tipoVehiculo = "Moto clasica";
-                                    break;
-                                case 3:
-                                    tipoVehiculo = "Moto hibrida";
-                                    break;
-                            }
-                            System.out.println("- Tipo. " + tipoVehiculo + ", Total recaudado: $" + entry.getValue());
+                            int tipoVehiculo = entry.getKey();
+                            double costo = entry.getValue();
+                            System.out.println("Tipo de vehículo: " + tipoVehiculo + ", Costo: $" + costo);
+                        }
+                        return;
+
+                    case 7:
+                        Map<Integer, Double> reporteMensual = parqueadero.generarReporteMensual();
+                        System.out.println("Reporte mensual: ");
+                        for (Map.Entry<Integer, Double> entry : reporteMensual.entrySet()) {
+                            int tipoVehiculo = entry.getKey();
+                            double costoPorHora = parqueadero.getTarifas().getOrDefault(tipoVehiculo, 0.0);
+                            double costoPorDia = parqueadero.getTarifasDiarias().getOrDefault(tipoVehiculo, 0.0);
+                            double costoMensual = parqueadero.getTarifasMensuales().getOrDefault(tipoVehiculo, 0.0);
+
+                            double total = entry.getValue();
+
+                            total += costoPorHora + costoPorDia + costoMensual;
+                            System.out.println("tipo de vehículo: " + tipoVehiculo + ", Costo total: $" + total);
                         }
                         break;
                     
-                    case 7:
+                    case 8:
                     System.out.println("Estado del parqueadero");
                     for (int i = 0; i < parqueadero.getFilas(); i++) {
                         for (int j = 0; j < parqueadero.getColumnas(); j++) {
@@ -165,7 +192,7 @@ public class App {
                     }
                     break;
 
-                    case 8:
+                    case 9:
                         salir = true;
                         System.out.println("Saliendo del Sustema del parqeuadero. ¡Feliz día!");
                         break;
@@ -193,6 +220,20 @@ public class App {
             } catch (NumberFormatException e) {
                 System.out.println("Error. Ingrese un número válido");
             }
+        }
+        return valor;
+    }
+
+    private static double obtenerDoubleValido(String mensaje) {
+        double valor; 
+        while (true) {
+            System.out.println(mensaje);
+            try {
+                valor = Double.parseDouble(scanner.nextLine());
+                break;
+            } catch (NumberFormatException e) {
+                System.out.println("Error. Ingrese un número válido");
+            }  
         }
         return valor;
     }

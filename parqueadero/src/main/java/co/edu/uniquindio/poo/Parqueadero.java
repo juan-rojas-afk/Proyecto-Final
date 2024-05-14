@@ -15,6 +15,10 @@ public class Parqueadero {
     private boolean[][] puestosOcupados;
     private Map<Integer, Double> tarifas;
     private Map<String, LocalDateTime> registroEntradas;
+    private Map<Integer, Double> tarifasPorHora;
+    private Map<Integer, Double> tarifasDiarias;
+    private Map<Integer, Double> tarifasMensuales;
+    private Map<Integer, Double> ingresosMensaules;
     private int filas;
     private int columnas;
 
@@ -28,6 +32,10 @@ public class Parqueadero {
         puestos = new Vehiculo[filas][columnas];
         tarifas = new HashMap<>();
         registroEntradas = new HashMap<>();
+        tarifasPorHora = new HashMap<>();
+        tarifasDiarias = new HashMap<>();
+        tarifasMensuales = new HashMap<>();
+        ingresosMensaules = new HashMap<>();
         puestosOcupados = new boolean[filas][columnas];
         this.filas = filas;
         this.columnas = columnas;
@@ -49,8 +57,32 @@ public class Parqueadero {
         return tarifas;
     }
 
+    public void setTarifaPorHora(int tipoVehiculo, double tarifaPorHora) {
+        tarifasPorHora.put(tipoVehiculo, tarifaPorHora);
+    }
+
+    public void setTarifaDiaria(int tipoVehiculo, double tarifasDiaria) {
+        tarifasDiarias.put(tipoVehiculo, tarifasDiaria);
+    }
+
+    public void setTarifaMensual(int tipoVehiculo, double tarifasMensual) {
+        tarifasMensuales.put(tipoVehiculo, tarifasMensual);
+    }
+
     public boolean puestoDisponible(int fila, int columna) {
         return puestos[fila][columna] == null;
+    }
+
+    public Map<Integer, Double> getTarifasPorHora() {
+        return tarifasPorHora;
+    }
+
+    public Map<Integer, Double> getTarifasDiarias() {
+        return tarifasDiarias;
+    }
+
+    public Map<Integer, Double> getTarifasMensuales() {
+        return tarifasMensuales;
     }
     
     //Estaciona el vehiculo en un lugar en especifico
@@ -155,23 +187,67 @@ public class Parqueadero {
             long horas = tiempoTranscurrido.toHours();
 
             if (puestos != null && puestos.length > 0 && puestos[0].length > 0) {
-                for (int i = 0; i < puestos.length; i++) {
+                for (int i = 0; i < puestos.length; i ++) {
                     for (int j = 0; j < puestos[0].length; j++) {
                         Vehiculo vehiculo = puestos[i][j];
                         if (vehiculo != null && vehiculo.getPlaca().equals(placa)) {
                             double total = reporteDiario.getOrDefault(vehiculo.getTipo(), 0.0);
-                            double tarifaHora = tarifas.getOrDefault(vehiculo.getTipo(), 0.0);
-                            total += horas * tarifaHora;
+                            double tarifaPorHora = tarifasPorHora.getOrDefault(vehiculo.getTipo(), 0.0);
+                            double tarifaDiaria = tarifasDiarias.getOrDefault(vehiculo.getTipo(), 0.0);
+                            total += horas * tarifaPorHora * tarifaDiaria;
                             reporteDiario.put(vehiculo.getTipo(), total);
                         }
                     }
                 }
-            }else {
-            System.out.println("Error: No se pudo generar el reporte Diario. No hay información de puestos diponibles");
-            return null; 
+            } else {
+                System.out.println("Error: No se pudo generar el reporte Diario. No hay información de puestos disponibles");
+                return null;
+            }
+        } return reporteDiario;
+    }
+
+    public Map<Integer, Double> generarReporteMensual() {
+        Map<Integer, Double> reporteMensual = new HashMap<>();
+    
+        for (Map.Entry<String, LocalDateTime> entry : registroEntradas.entrySet()) {
+            String placa = entry.getKey();
+            LocalDateTime horaEntrada = entry.getValue();
+            LocalDateTime horaSalida = LocalDateTime.now();
+            Duration tiempoTranscurrido = Duration.between(horaEntrada, horaSalida);
+            long diasEstadia =  tiempoTranscurrido.toDays();
+
+            if (diasEstadia > 0) {
+                // Cobrar tarifa diaria o mensual según corresponda 
+                Vehiculo vehiculo = buscarVehiculoPorPlaca(placa);
+                if (vehiculo != null) {
+                    double total = reporteMensual.getOrDefault(vehiculo.getTipo(), 0.0);
+                    if (diasEstadia == 1) {
+                        double tarifaDiaria = tarifasDiarias.getOrDefault(vehiculo.getTipo(), 0.0);
+                        total += tarifaDiaria;
+                    } else {
+                        double tarifaMensual = tarifasMensuales.getOrDefault(vehiculo.getTipo(), 0.0);
+                        total += tarifaMensual;
+                    }
+                    reporteMensual.put(vehiculo.getTipo(), total);
+                }
             }
         }
-        return reporteDiario;
+        return reporteMensual;
+    }
+
+    public double obtenerIngresosMensuales(int mes) {
+        return ingresosMensaules.getOrDefault(mes, 0.0);
+    }
+
+    public Vehiculo buscarVehiculoPorPlaca(String placa) {
+        for (Vehiculo[] fila : puestos) {
+            for (Vehiculo vehiculo : fila) {
+                if (vehiculo != null && vehiculo.getPlaca().equals(placa)) {
+                    return vehiculo;
+                }
+            }
+        }
+        return null;
     }
 
     public void guardarDatos(String nombreArchivo) {
