@@ -21,15 +21,15 @@ public class App {
             System.out.println("\nSeleccione una opción");
             System.out.println("1. Configurar valores de tarifas");
             System.out.println("2. Configurar Tamaño del parqueadero");
-            System.out.println("3. Estacionar vehiculo");
+            System.out.println("3. Estacionar vehículo");
             System.out.println("4. Desocupar puesto");
-            System.out.println("5. Identiifcar propietario del vehiculo");
+            System.out.println("5. Identiifcar propietario del vehículo");
             System.out.println("6. Generar reporte diario");
             System.out.println("7. Generar reporte mensual");
             System.out.println("8. Estado del Parqueadero ");
             System.out.println("9. Salir");
 
-            int opcion = obtenerEnteroValido("Ingrese el número de opción: ", 1, 8);
+            int opcion = obtenerEnteroValido("Ingrese el número de opción: ", 1, 9);
 
 
             try {
@@ -42,7 +42,7 @@ public class App {
                         }
 
                         // Tarifas por Hora 
-                        System.out.println("Ingresenlas tarifas por hora para cada tipo de vehículo: ");
+                        System.out.println("Ingrese las tarifas por hora para cada tipo de vehículo: ");
                         double tarifaHoraCarro = obtenerDoubleValido("Tarifa por hora para carro: ");
                         double tarifaHoraMotoClasica = obtenerDoubleValido("Tarifa por hora para moto clásica");
                         double tarifaHoraMotoHibrida = obtenerDoubleValido("Tarifa por hora para moto clásica");
@@ -82,13 +82,13 @@ public class App {
 
                     case 3:
                         System.out.println ("Estacionar vehículo");
-                        System.out.println("Ingrese la placa del vehiculo formato: ");
+                        System.out.println("Ingrese la placa del vehiculo formato(ABC123): ");
                         String placa = scanner.nextLine();
-                        System.out.println("Ingrese el modelo del vehiculo: ");
+                        System.out.println("Ingrese el modelo del vehículo: ");
                         String modelo = scanner.nextLine();
-                        System.out.println("Ingrese el nombre del propietario del vehiculo: ");
+                        System.out.println("Ingrese el nombre del propietario del vehículo: ");
                         String propietario = scanner.nextLine();
-                        System.out.println("Ingrese el modelo del vehiculo (1: Carro, 2: Moto Clasica, 3: Moto hibrida): ");
+                        System.out.println("Ingrese el modelo del vehículo (1: Carro, 2: Moto Clásica, 3: Moto Híbrida): ");
                         int tipo = scanner.nextInt();
                         scanner.nextLine();
 
@@ -96,12 +96,12 @@ public class App {
                         if (tipo == 1) {
                             vehiculo = new Carro(placa, modelo, propietario);   
                         } else if (tipo == 2 || tipo == 3) { 
-                            System.out.println("Ingrese la velocidad maxima del vehicuo: ");
+                            System.out.println("Ingrese la velocidad máxima del vehicuo: ");
                             int velocidadMaxima = scanner.nextInt();
                             scanner.nextLine();
                             vehiculo = new Moto(placa, modelo, propietario, velocidadMaxima);
                         } else {
-                            System.out.println("Tipo de vehiculo no valido");
+                            System.out.println("Tipo de vehículo no valido");
                             continue;
                         }
 
@@ -125,14 +125,14 @@ public class App {
 
                         break;
                     case 4:
-                        System.out.println("Ingrese la fila del uesto a desocupar: ");
+                        System.out.println("Ingrese la fila del puesto a desocupar: ");
                         fila = scanner.nextInt();
                         System.out.println("Ingrese la columna del puesto a desocupar: ");
                         columna = scanner.nextInt();
 
                         Vehiculo vehiculoDesocupado = parqueadero.desocuparPuesto(fila, columna);
                         if (vehiculoDesocupado != null) {
-                            System.out.println("Se ha desocupado el pesuto de manera correcta");
+                            System.out.println("Se ha desocupado el puesto de manera correcta");
                         } else {
                             System.out.println("El puesto se encuentra vacio");
                         }
@@ -146,7 +146,7 @@ public class App {
 
                         String propietarioIdentificado = parqueadero.identificarPropietario(fila, columna);
                         if (propietarioIdentificado != null) {
-                            System.out.println("El propietario del vehidulo en ese puesto es: " + propietarioIdentificado);
+                            System.out.println("El propietario del vehículo en ese puesto es: " + propietarioIdentificado);
                         } else {
                             System.out.println("El puesto se encuentra vacio");
                         }
@@ -194,7 +194,7 @@ public class App {
 
                     case 9:
                         salir = true;
-                        System.out.println("Saliendo del Sustema del parqeuadero. ¡Feliz día!");
+                        System.out.println("Saliendo del Sistema del parqueadero. ¡Feliz día!");
                         break;
                     default:
                         System.out.println("Opción invalida. Por favor, seleccione una opción valida");

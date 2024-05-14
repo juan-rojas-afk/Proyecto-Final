@@ -95,12 +95,12 @@ public class Parqueadero {
         }
         String placa = vehiculo.getPlaca();
         if (!validarFormatoPlaca(placa)) {
-            throw new FormatoPlacaException("La placa del vehiculo debe tener el formato ABC123"); 
+            throw new FormatoPlacaException("La placa del vehículo debe tener el formato ABC123"); 
         }
 
         String propietario = vehiculo.getPropietario();
         if (!validarNombrePropietario(propietario)) {
-            throw new NombrePropietarioException("El nombre del propietario del vehiculo solo puede contener letras");
+            throw new NombrePropietarioException("El nombre del propietario del vehículo solo puede contener letras");
         }
 
         puestos[fila][columna] = vehiculo;
@@ -140,7 +140,7 @@ public class Parqueadero {
                 }
             }
         }
-        System.out.println("Error: No se encontró el vehiculo con la placa especificada.");
+        System.out.println("Error: No se encontró el vehículo con la placa especificada.");
         return 0.0;
     }
 
