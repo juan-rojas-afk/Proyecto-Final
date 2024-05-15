@@ -1,0 +1,107 @@
+@startuml parqueadero
+
+class Parqueadero {
+    - puestos: Vehiculo[][]
+    - puestosOcupados: boolean[][]
+    - tarifas: Map<Integer, Double>
+    - registroEntradas: Map<String, LocalDateTime>
+    - tarifasPorHora: Map<Integer, Double>
+    - tarifasDiarias: Map<Integer, Double>
+    - tarifasMensuales: Map<Integer, Double>
+    - ingresosMensuales: Map<Integer, Double>
+    - filas: int
+    - columnas: int
+    + Parqueadero(filas: int, columnas: int)
+    + getFilas(): int
+    + getColumnas(): int
+    + getPuestos(): Vehiculo[][]
+    + getTarifas(): Map<Integer, Double>
+    + setTarifaPorHora(tipoVehiculo: int, tarifaPorHora: double): void
+    + setTarifaDiaria(tipoVehiculo: int, tarifaDiaria: double): void
+    + setTarifaMensual(tipoVehiculo: int, tarifaMensual: double): void
+    + puestoDisponible(fila: int, columna: int): boolean
+    + getTarifasPorHora(): Map<Integer, Double>
+    + getTarifasDiarias(): Map<Integer, Double>
+    + getTarifasMensuales(): Map<Integer, Double>
+    + estacionarVehiculo(vehiculo: Vehiculo, fila: int, columna: int): boolean
+    + desocuparPuesto(fila: int, columna: int): Vehiculo
+    + registrarSalida(placa: String): double
+    + identificarPropietario(fila: int, columna: int): String
+    + registrarIngreso(vehiculo: Vehiculo, filas: int, columnas: int): void
+    + getRegistroEntradas(): Map<String, LocalDateTime>
+    - calcularCostoEstadia(horaEntrada: LocalDateTime, horaSalida: LocalDateTime, tipoVehiculo: int): double
+    + setTarifas(tipoVehiculo: int, tarifa: double): void
+    + calcularCosto(placa: String, horas: int): double
+    + generarReporteDiario(): Map<Integer, Double>
+    + generarReporteMensual(): Map<Integer, Double>
+    + obtenerIngresosMensuales(mes: int): double
+    + buscarVehiculoPorPlaca(placa: String): Vehiculo
+    + guardarDatos(nombreArchivo: String): void
+    + cargarDatos(nombreArchivo: String): void
+}
+
+class Vehiculo {
+    - placa: String
+    - modelo: String
+    - propietario: String
+    + Vehiculo(placa: String, modelo: String, propietario: String)
+    + getPlaca(): String
+    + getModelo(): String
+    + getPropietario(): String
+    ~ getTipo(): int
+}
+
+class Carro {
+    + Carro(placa: String, modelo: String, propietario: String)
+    ~ getTipo(): int
+}
+
+class Moto {
+    - velocidadMaxima: int
+    + Moto(placa: String, modelo: String, propietario: String, velocidadMaxima: int)
+    ~ getTipo(): int
+}
+
+class ParqueaderoException {
+    + ParqueaderoException(mensaje: String)
+    ~ obtenerTipo(): String
+}
+
+class FormatoPlacaException {
+    + FormatoPlacaException(mensaje: String)
+    ~ obtenerTipo(): String
+}
+
+class FueraDeLimitesException {
+    + FueraDeLimitesException(mensaje: String)
+    ~ obtenerTipo(): String
+}
+
+class NombrePropietarioException {
+    + NombrePropietarioException(mensaje: String)
+    ~ obtenerTipo(): String
+}
+
+class ErrorLogger {
+    + logError(e: Exception): void
+}
+
+class App {
+    - scanner: Scanner
+    - parqueadero: Parqueadero
+    + main(args: String[]): void
+    + obtenerEnteroValido(mensaje: String, min: int, max: int): int
+    + obtenerDoubleValido(mensaje: String): double
+}
+
+Parqueadero --|> ParqueaderoException
+Parqueadero --|> Vehiculo
+Vehiculo <|-- Carro
+Vehiculo <|-- Moto
+ParqueaderoException <|-- FormatoPlacaException
+ParqueaderoException <|-- FueraDeLimitesException
+ParqueaderoException <|-- NombrePropietarioException
+Parqueadero --> ErrorLogger
+App --> Parqueadero
+App --> ErrorLogger
+@enduml
