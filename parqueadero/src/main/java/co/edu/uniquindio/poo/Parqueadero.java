@@ -240,7 +240,7 @@ public class Parqueadero {
     * @param tipoVehiculo El tipo de vehículo estacionado.
     * @return El costo de la estadía del vehículo.
     */
-    private double calcularCostoEstadia(LocalDateTime horaEntrada, LocalDateTime horaSalida, int tipoVehiculo) {
+    public double calcularCostoEstadia(LocalDateTime horaEntrada, LocalDateTime horaSalida, int tipoVehiculo) {
         // CAlcula la duración de la estadía del vehículo
         Duration tiempoTranscurrido = Duration.between(horaEntrada, horaSalida);
         long horas = tiempoTranscurrido.toHours();
@@ -386,5 +386,4 @@ public class Parqueadero {
         System.out.println("no se pudo cargar los datos: " + e.getMessage());
     }
 }
-
 }
