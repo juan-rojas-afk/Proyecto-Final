@@ -53,7 +53,7 @@ public class App {
                         System.out.println("Ingrese las tarifas por hora para cada tipo de vehículo: ");
                         double tarifaHoraCarro = obtenerDoubleValido("Tarifa por hora para carro: ");
                         double tarifaHoraMotoClasica = obtenerDoubleValido("Tarifa por hora para moto clásica");
-                        double tarifaHoraMotoHibrida = obtenerDoubleValido("Tarifa por hora para moto clásica");
+                        double tarifaHoraMotoHibrida = obtenerDoubleValido("Tarifa por hora para moto Híbrida");
                         parqueadero.setTarifaPorHora(Parqueadero.TIPO_CARRO, tarifaHoraCarro);
                         parqueadero.setTarifaPorHora(Parqueadero.TIPO_MOTO_CLASICA,tarifaHoraMotoClasica);
                         parqueadero.setTarifaPorHora(Parqueadero.TIPO_MOTO_HIBRIDA, tarifaHoraMotoHibrida);
@@ -61,7 +61,7 @@ public class App {
                         // Tarifas por día 
                         System.out.println("Ingrese las tarifas diarias y mensuales para cada tipo de vehículo: ");
                         System.out.println("1. Carro");
-                        double tarifaDiariaCarro = obtenerDoubleValido("Tarifa diaria para caroo: ");
+                        double tarifaDiariaCarro = obtenerDoubleValido("Tarifa diaria para carro: ");
                         double tarifaMensualCarro = obtenerDoubleValido("Tarifa mensual para carro: ");
                         parqueadero.setTarifaDiaria(Parqueadero.TIPO_CARRO, tarifaDiariaCarro);
                         parqueadero.setTarifaMensual(Parqueadero.TIPO_CARRO, tarifaMensualCarro);
