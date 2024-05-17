@@ -139,7 +139,7 @@ public class Parqueadero {
      * @throws ParqueaderoException Si ocurre un error duarante el proceso de estacionamiento.
      */
     public boolean estacionarVehiculo (Vehiculo vehiculo, int fila, int columna) throws ParqueaderoException {
-        if (fila < 0 || fila >= filas || columna < 0 || columnas >= columnas) {
+        if (fila >= 0 || fila < filas || columna > 0 || columnas < columnas) {
             throw new FueraDeLimitesException("La posición especifica está fuera de los límites del parqueadero.");
         }
         if (!puestoDisponible(fila, columna)) {
