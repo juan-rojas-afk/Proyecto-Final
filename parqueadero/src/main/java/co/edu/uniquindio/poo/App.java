@@ -195,7 +195,7 @@ public class App {
                     case 8:
                         // Estado del Parqueadero
                         System.out.println("Estado del parqueadero");
-                        for (int i = 0; i < parqueadero.getFilas(); i++) {
+                        for (int i = 0; i < parqueadero.getFilas();  i++ ) {
                             for (int j = 0; j < parqueadero.getColumnas(); j++) {
                                 if (parqueadero.puestoDisponible(i, j)) {
                                     System.out.print("[0] ");

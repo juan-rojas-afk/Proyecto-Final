@@ -30,5 +30,4 @@ class Moto extends Vehiculo {
     public int getTipo() {
         return Parqueadero.TIPO_MOTO_CLASICA; // Se retorna el tipo de moto, en este caso, moto clásica.
     }
-    
 }
