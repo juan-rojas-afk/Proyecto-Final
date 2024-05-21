@@ -133,7 +133,7 @@ public class ParqueaderoTest {
     }
 
     @Test
-    public void testDesocuparPuestoWithInvalidCoordinates() {
+    public void testDesocuparPuestoEnCoordenadasValidas() {
 
         assertThrows(FueraDeLimitesException.class, () -> parqueadero.desocuparPuesto(-1, 0));
         assertThrows(FueraDeLimitesException.class, () -> parqueadero.desocuparPuesto(0, -1));
