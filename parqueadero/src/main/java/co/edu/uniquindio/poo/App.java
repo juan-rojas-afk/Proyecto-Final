@@ -109,15 +109,15 @@ public class App {
                             System.out.println("Ingrese la velocidad máxima del vehicuo: ");
                             int velocidadMaxima = scanner.nextInt();
                             scanner.nextLine();
-                            vehiculo = new Moto(placa, modelo, propietario, velocidadMaxima);
+                            vehiculo = new MotoClasica(placa, modelo, propietario, velocidadMaxima);
                         } else {
                             System.out.println("Tipo de vehículo no valido");
                             continue;
                         }
 
                         System.out.println("Ingrese la fila y columna del puesto (fila columna): ");
-                            int fila = obtenerEnteroValido("Fila: ", 0, parqueadero.getFilas() - 1);
-                            int columna = obtenerEnteroValido("Columna: ", 0, parqueadero.getColumnas() - 1);
+                            int fila = obtenerEnteroValido("Fila: ", 1, parqueadero.getFilas()) - 1;
+                            int columna = obtenerEnteroValido("Columna: ", 1, parqueadero.getColumnas()) - 1;
 
                             try {
                                 if (parqueadero.estacionarVehiculo(vehiculo, fila, columna)) {
@@ -141,11 +141,15 @@ public class App {
                         System.out.println("Ingrese la columna del puesto a desocupar: ");
                         columna = scanner.nextInt();
 
-                        Vehiculo vehiculoDesocupado = parqueadero.desocuparPuesto(fila, columna);
-                        if (vehiculoDesocupado != null) {
-                            System.out.println("Se ha desocupado el puesto de manera correcta");
-                        } else {
-                            System.out.println("El puesto se encuentra vacio");
+                        try {
+                            Vehiculo vehiculoDesocupado = parqueadero.desocuparPuesto(fila, columna);
+                            if (vehiculoDesocupado != null) {
+                                System.out.println("Se ha desocupado el puesto de manera correcta.");
+                            } else {
+                                System.out.println("El puesto se encuentra vacío.");
+                            }
+                        } catch (ParqueaderoException e) {
+                            System.out.println("Error: " + e.getMessage());
                         }
                         break;
 
