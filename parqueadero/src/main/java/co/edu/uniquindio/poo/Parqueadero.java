@@ -319,7 +319,7 @@ public class Parqueadero {
                     }
                 }
             } else {
-                // Si no hay información de puestos disponibles, muestra un mensaje de errr¿or
+                // Si no hay información de puestos disponibles, muestra un mensaje de error
                 System.out.println("Error: No se pudo generar el reporte Diario. No hay información de puestos disponibles");
                 return null;
             }

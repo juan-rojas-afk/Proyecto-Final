@@ -170,18 +170,28 @@ public class App {
                     case 6: 
                         // Generar reporte diario
                         Map<Integer, Double>  reporteDiario = parqueadero.generarReporteDiario();
-                        System.out.println("Reporte diario: ");
-                        for (Map.Entry<Integer, Double> entry : reporteDiario.entrySet()) {
-                            int tipoVehiculo = entry.getKey();
-                            double costo = entry.getValue();
-                            System.out.println("Tipo de vehículo: " + tipoVehiculo + ", Costo: $" + costo);
+                        if (reporteDiario != null) {
+
+                            System.out.println("--------------------------------------------------------");
+                            System.out.println("                    Reporte Diario                      ");
+                            System.out.println("--------------------------------------------------------");
+                            for (Map.Entry<Integer, Double> entry : reporteDiario.entrySet()) {
+                                int tipoVehiculo = entry.getKey();
+                                double costo = entry.getValue();
+                                System.out.println("Tipo de vehículo: " + tipoVehiculo + ", Costo: $" + costo);
+                                System.out.println("--------------------------------------------------------");
+                                System.out.println("                   Fin del Resporte                     ");
+                                System.out.println("--------------------------------------------------------");
+                            }    
                         }
-                        return;
+                        break;
 
                     case 7:
                         // Generar reporte mensual
                         Map<Integer, Double> reporteMensual = parqueadero.generarReporteMensual();
-                        System.out.println("Reporte mensual: ");
+                        System.out.println("--------------------------------------------------------");
+                        System.out.println("                    Reporte mensual                     ");
+                        System.out.println("--------------------------------------------------------");
                         for (Map.Entry<Integer, Double> entry : reporteMensual.entrySet()) {
                             int tipoVehiculo = entry.getKey();
                             double costoPorHora = parqueadero.getTarifas().getOrDefault(tipoVehiculo, 0.0);
@@ -192,6 +202,9 @@ public class App {
 
                             total += costoPorHora + costoPorDia + costoMensual;
                             System.out.println("tipo de vehículo: " + tipoVehiculo + ", Costo total: $" + total);
+                            System.out.println("--------------------------------------------------------");
+                            System.out.println("                  Fin Reporte Mensual                   ");
+                            System.out.println("--------------------------------------------------------");
                         }
                         break;
                     
