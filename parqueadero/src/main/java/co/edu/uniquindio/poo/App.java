@@ -136,10 +136,9 @@ public class App {
                         break;
                     case 4:
                         // Desocupar Puesto 
-                        System.out.println("Ingrese la fila del puesto a desocupar: ");
-                        fila = scanner.nextInt();
-                        System.out.println("Ingrese la columna del puesto a desocupar: ");
-                        columna = scanner.nextInt();
+                        System.out.println("Ingrese la fila y columna del puesto (fila columna): ");
+                            fila = obtenerEnteroValido("Fila: ", 1, parqueadero.getFilas()) - 1;
+                            columna = obtenerEnteroValido("Columna: ", 1, parqueadero.getColumnas()) - 1;
 
                         try {
                             Vehiculo vehiculoDesocupado = parqueadero.desocuparPuesto(fila, columna);
