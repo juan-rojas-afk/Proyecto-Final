@@ -20,10 +20,11 @@ public class Factura {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         System.out.println("Factura");
         System.out.println("Vehículo: " + vehiculo.getTipo());
-        System.out.println("PLaca: " + vehiculo.getPlaca());
-        System.out.println("Prpietario: " + vehiculo.getPropietario());
+        System.out.println("Placa: " + vehiculo.getPlaca());
+        System.out.println("Modelo: " + vehiculo.getModelo());
+        System.out.println("Propietario: " + vehiculo.getPropietario());
         System.out.println("Hora de entrada: " + horaEntrada.format(formatter));
-        System.out.println("Hora de Salida: " + horaSalida.format(formatter));
+        System.out.println("Hora de salida: " + horaSalida.format(formatter));
         System.out.println("Costo total : $" + costoTotal); 
     }
     
