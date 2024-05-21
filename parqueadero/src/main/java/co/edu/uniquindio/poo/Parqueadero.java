@@ -177,9 +177,28 @@ public class Parqueadero {
      * @param columna La columna del puesto a desocupar.
      * @return El vehículo que estaba estacionado en el puesto, o null si el puesto estaba vacío.
      */
-    public Vehiculo desocuparPuesto(int fila, int columna) {
+    public Vehiculo desocuparPuesto(int fila, int columna) throws ParqueaderoException {
+        if (fila < 0 || fila >= filas || columna < 0 || columna >= columnas) {
+            throw new FueraDeLimitesException("Fila o columna fuera de límites.");
+        }
+
         Vehiculo vehiculo = puestos[fila][columna];
-        puestos [fila][columna] = null;
+        if (vehiculo == null) {
+            return null;
+        }
+
+        LocalDateTime horaEntrada = registroEntradas.get(vehiculo.getPlaca());
+        LocalDateTime horaSalida = LocalDateTime.now();
+        double costoTotal = calcularCostoEstadia(horaEntrada, horaSalida, vehiculo.getTipo());
+
+        // Crear la factura
+        Factura factura = new Factura(vehiculo, horaEntrada, horaSalida, costoTotal);
+        factura.imprimirFactura();
+
+        // Limpiar el puesto
+        puestos[fila][columna] = null;
+        registroEntradas.remove(vehiculo.getPlaca());
+
         return vehiculo;
     }
 
