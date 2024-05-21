@@ -37,14 +37,14 @@ public class Parqueadero {
      */
     public Parqueadero(int filas, int columnas) {
         // Inicialización de los atributos y mapas.
-        puestos = new Vehiculo[filas][columnas];
-        tarifas = new HashMap<>();
-        registroEntradas = new HashMap<>();
-        tarifasPorHora = new HashMap<>();
-        tarifasDiarias = new HashMap<>();
-        tarifasMensuales = new HashMap<>();
-        ingresosMensaules = new HashMap<>();
-        puestosOcupados = new boolean[filas][columnas];
+        this.puestos = new Vehiculo[filas][columnas];
+        this.tarifas = new HashMap<>();
+        this.registroEntradas = new HashMap<>();
+        this.tarifasPorHora = new HashMap<>();
+        this.tarifasDiarias = new HashMap<>();
+        this.tarifasMensuales = new HashMap<>();
+        this.ingresosMensaules = new HashMap<>();
+        this.puestosOcupados = new boolean[filas][columnas];
         this.filas = filas;
         this.columnas = columnas;
     }
@@ -291,6 +291,7 @@ public class Parqueadero {
     * 
     * @return Un mapa que contiene el tipo de vehículo como clave y el costo total de la estadía como valor.
     */
+    // Método para generar el reporte diario
     public Map<Integer, Double> generarReporteDiario() {
         Map<Integer, Double> reporteDiario = new HashMap<>();
 
@@ -311,7 +312,8 @@ public class Parqueadero {
                             double total = reporteDiario.getOrDefault(vehiculo.getTipo(), 0.0);
                             double tarifaPorHora = tarifasPorHora.getOrDefault(vehiculo.getTipo(), 0.0);
                             double tarifaDiaria = tarifasDiarias.getOrDefault(vehiculo.getTipo(), 0.0);
-                            total += horas * tarifaPorHora * tarifaDiaria;
+                            total += horas * tarifaPorHora; 
+                            total += tarifaDiaria;
                             reporteDiario.put(vehiculo.getTipo(), total);
                         }
                     }
@@ -341,19 +343,21 @@ public class Parqueadero {
             LocalDateTime horaSalida = LocalDateTime.now();
             Duration tiempoTranscurrido = Duration.between(horaEntrada, horaSalida);
             long diasEstadia =  tiempoTranscurrido.toDays();
+            long mesesEstadia = diasEstadia / 30;
 
-            // s+Si la estadía es mayor a 0 días
+            // Si la estadía es mayor a 0 días
             if (diasEstadia > 0) {
                 // Cobrar tarifa diaria o mensual según corresponda 
                 Vehiculo vehiculo = buscarVehiculoPorPlaca(placa);
                 if (vehiculo != null) {
-                    double total = reporteMensual.getOrDefault(vehiculo.getTipo(), 0.0);
-                    if (diasEstadia == 1) {
-                        double tarifaDiaria = tarifasDiarias.getOrDefault(vehiculo.getTipo(), 0.0);
-                        total += tarifaDiaria;
+                    int tipoVehiculo = vehiculo.getTipo();
+                    double total = reporteMensual.getOrDefault(tipoVehiculo, 0.0);
+                    if (mesesEstadia > 0) {
+                        double tarifaMensual = tarifasMensuales.getOrDefault(tipoVehiculo, 0.0);
+                        total += mesesEstadia * tarifaMensual;
                     } else {
-                        double tarifaMensual = tarifasMensuales.getOrDefault(vehiculo.getTipo(), 0.0);
-                        total += tarifaMensual;
+                        double tarifaDiaria = tarifasDiarias.getOrDefault(tipoVehiculo, 0.0);
+                        total += diasEstadia * tarifaDiaria;
                     }
                     reporteMensual.put(vehiculo.getTipo(), total);
                 }
