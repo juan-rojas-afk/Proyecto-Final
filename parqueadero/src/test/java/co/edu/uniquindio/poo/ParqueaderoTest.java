@@ -2,7 +2,9 @@ package co.edu.uniquindio.poo;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDateTime;
@@ -119,8 +121,24 @@ public class ParqueaderoTest {
     //------------------------------------------------------------------------------------------------------------------------------------------------------//
 
     @Test
-    public void testDesocuparPuesto_Empty() {
-        assertNull(parqueadero.desocuparPuesto(0, 0)); 
+    public void testDesocuparPuestoConCoordenasInvalidas() throws ParqueaderoException {
+        Vehiculo vehiculo = new Carro("ABC123", "Modelo", "Propietario");
+        parqueadero.estacionarVehiculo(vehiculo, 1, 1);
+
+        Vehiculo vehiculoDesocupado = parqueadero.desocuparPuesto(1, 1);
+
+        assertNotNull(vehiculoDesocupado);
+        assertEquals(vehiculo, vehiculoDesocupado);
+        assertNull(parqueadero.getPuestos()[0][0]);
+    }
+
+    @Test
+    public void testDesocuparPuestoWithInvalidCoordinates() {
+
+        assertThrows(FueraDeLimitesException.class, () -> parqueadero.desocuparPuesto(-1, 0));
+        assertThrows(FueraDeLimitesException.class, () -> parqueadero.desocuparPuesto(0, -1));
+        assertThrows(FueraDeLimitesException.class, () -> parqueadero.desocuparPuesto(5, 0));
+        assertThrows(FueraDeLimitesException.class, () -> parqueadero.desocuparPuesto(0, 5));
     }
 
     //------------------------------------------------------------------------------------------------------------------------------------------------------//
@@ -222,7 +240,7 @@ public class ParqueaderoTest {
         parqueadero.setTarifas(Parqueadero.TIPO_CARRO, tarifaHoraCarro);
         parqueadero.setTarifas(Parqueadero.TIPO_MOTO_CLASICA, tarifaHoraMoto);
         Vehiculo carro = new Carro("ABC123", "Toyota", "Juan");
-        Vehiculo moto = new Moto("XYZ789", "Honda", "Maria", 150);
+        Vehiculo moto = new MotoClasica("XYZ789", "Honda", "Maria", 150);
 
         try {
             parqueadero.estacionarVehiculo(carro, 0, 0); 
@@ -252,7 +270,7 @@ public class ParqueaderoTest {
         parqueadero.setTarifaMensual(Parqueadero.TIPO_CARRO, tarifaMensualCarro);
         parqueadero.setTarifaMensual(Parqueadero.TIPO_MOTO_CLASICA, tarifaMensualMoto);
         Vehiculo carro = new Carro("ABC123", "Toyota", "Juan");
-        Vehiculo moto = new Moto("XYZ789", "Honda", "Maria", 150);
+        Vehiculo moto = new MotoClasica("XYZ789", "Honda", "Maria", 150);
 
         try {
             parqueadero.estacionarVehiculo(carro, 0, 0);
